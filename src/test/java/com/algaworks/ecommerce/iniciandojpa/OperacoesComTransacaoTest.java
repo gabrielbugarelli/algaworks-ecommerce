@@ -10,6 +10,21 @@ import java.math.BigDecimal;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
   @Test
+  public void removerObjeto () {
+    Produto produto = entityManager.find(Produto.class, 3);
+
+    entityManager.getTransaction().begin();
+    entityManager.remove(produto);
+    entityManager.getTransaction().commit();
+
+    // entityManager.clear(); não é necessário para operações de remoção
+
+    //Teste para validar que a linha do id 3 não existe no banco
+    Produto produtoVerificacao = entityManager.find(Produto.class, 3);
+    Assert.assertNull(produtoVerificacao);
+  }
+
+  @Test
   public void inserirOPrimeiroObjeto () {
 
     /*
