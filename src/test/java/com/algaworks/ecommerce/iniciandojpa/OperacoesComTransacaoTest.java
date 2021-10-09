@@ -10,6 +10,29 @@ import java.math.BigDecimal;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
   @Test
+  public void atualizarObjeto () {
+    Produto produto = new Produto();
+    produto.setId(1);
+    produto.setNome("Kindle OASIS");
+    produto.setDescricao("O Kindle mais top de linha da Amazon");
+    produto.setPreco(new BigDecimal(50000));
+
+    entityManager.getTransaction().begin();
+    entityManager.merge(produto);
+    entityManager.getTransaction().commit();
+
+    entityManager.clear();
+
+    // teste se o produto existe no banco de dados
+    Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+    Assert.assertNotNull(produtoVerificacao);
+
+    //teste se o produto é o possui o mesmo conteúdo do banco de dados
+    Assert.assertEquals("Kindle OASIS", produtoVerificacao.getNome());
+
+  }
+
+  @Test
   public void removerObjeto () {
     Produto produto = entityManager.find(Produto.class, 3);
 
@@ -56,11 +79,14 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
   public void abrirEFecharATransacao () {
     Produto produto = new Produto();
 
+    produto.setId(4);
+    produto.setNome("Tekpix");
+    produto.setDescricao("A câmera mais vendida do Brasil");
+    produto.setPreco(new BigDecimal(1300));
+
     //inicia a transação
     entityManager.getTransaction().begin();
-
     entityManager.persist(produto);
-    entityManager.merge(produto);
     entityManager.remove(produto);
 
     //finaliza a transação
