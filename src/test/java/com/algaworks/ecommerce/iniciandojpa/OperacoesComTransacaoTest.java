@@ -10,6 +10,45 @@ import java.math.BigDecimal;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
   @Test
+  public void inserirObjetoComMerge () {
+    Produto produto = new Produto();
+    produto.setId(4);
+    produto.setPreco(new BigDecimal(7000.00));
+    produto.setDescricao("A câmera mais vendida do Brasil");
+    produto.setNome("Tekpix");
+
+    entityManager.getTransaction().begin();
+    entityManager.merge(produto);
+    entityManager.getTransaction().commit();
+
+    // teste se o produto existe no banco de dados
+    Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+    Assert.assertNotNull(produtoVerificacao);
+
+    //teste se o produto é o possui o mesmo conteúdo do banco de dados
+    Assert.assertEquals("Tekpix", produtoVerificacao.getNome());
+
+  }
+
+  @Test
+  public void atualizarObjetoGerenciado () {
+    Produto produto = entityManager.find(Produto.class, 1);
+
+    entityManager.getTransaction().begin();
+    produto.setNome("Kindle Paperwhite 2021");
+    produto.setPreco(new BigDecimal("870.00"));
+    entityManager.getTransaction().commit();
+
+    // teste se o produto existe no banco de dados
+    Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+    Assert.assertNotNull(produtoVerificacao);
+
+    //teste se o produto é o possui o mesmo conteúdo do banco de dados
+    Assert.assertEquals("Kindle Paperwhite 2021", produtoVerificacao.getNome());
+
+  }
+
+  @Test
   public void atualizarObjeto () {
     Produto produto = new Produto();
     produto.setId(1);
