@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class Categoria {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.TABLE)
+  @TableGenerator(name = "tabela", table = "tabela_teste")
   private Integer id;
 
   @Column
