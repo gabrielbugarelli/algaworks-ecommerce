@@ -20,10 +20,13 @@ public class Pedido {
   @Column(name = "nota_fiscal_id")
   private Integer notaFiscalId;
 
+  private BigDecimal total;
+
   @Enumerated(EnumType.STRING)
   private StatusPedido status;
 
-  private BigDecimal total;
+  @Embedded //serve para mapearmos a classe EnderecoEntregaPedido na tabela do banco
+  private EnderecoEntregaPedido enderecoEntrega;
 
   public Integer getId() {
     return id;
