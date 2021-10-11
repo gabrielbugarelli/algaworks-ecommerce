@@ -1,9 +1,6 @@
 package com.algaworks.ecommerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cliente")
@@ -15,6 +12,7 @@ public class Cliente {
   @Column
   private String nome;
 
+  @Enumerated(EnumType.STRING)
   private SexoCliente sexo;
 
   /**

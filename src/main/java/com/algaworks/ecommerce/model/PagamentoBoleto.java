@@ -1,9 +1,6 @@
 package com.algaworks.ecommerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Gabriel Fonseca Mendes
@@ -22,6 +19,7 @@ public class PagamentoBoleto {
   @Column(name = "codigo_barras")
   private String codigoBarras;
 
+  @Enumerated(EnumType.STRING)
   private StatusPagamento status;
 
   private String numero;
