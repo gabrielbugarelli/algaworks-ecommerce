@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class Pedido {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "data_pedido")
@@ -16,6 +17,17 @@ public class Pedido {
 
   @Column(name = "data_conclusao")
   private LocalDateTime dataConclusao;
+
+  public Cliente getCliente() {
+    return cliente;
+  }
+
+  public void setCliente(Cliente cliente) {
+    this.cliente = cliente;
+  }
+
+  @ManyToOne
+  private Cliente cliente;
 
   @Column(name = "nota_fiscal_id")
   private Integer notaFiscalId;
