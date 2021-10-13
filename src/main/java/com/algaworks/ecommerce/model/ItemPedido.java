@@ -1,66 +1,66 @@
 package com.algaworks.ecommerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "item_pedido")
 public class ItemPedido {
 
-  @Id
-  private Integer Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(name = "pedido_id")
-  private Integer pedidoId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
-  @Column(name = "produto_id")
-  private Integer produtoId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
 
-  @Column(name = "preco_produto")
-  private BigDecimal precoProduto;
+    @Column(name = "preco_produto")
+    private BigDecimal precoProduto;
 
-  private Integer quandidade;
+    private Integer quantidade;
 
-  public Integer getId() {
-    return Id;
-  }
+    public Pedido getPedido() {
+        return pedido;
+    }
 
-  public void setId(Integer id) {
-    Id = id;
-  }
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 
-  public Integer getPedidoId() {
-    return pedidoId;
-  }
+    public Produto getProduto() {
+        return produto;
+    }
 
-  public void setPedidoId(Integer pedidoId) {
-    this.pedidoId = pedidoId;
-  }
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
-  public Integer getProdutoId() {
-    return produtoId;
-  }
+    public BigDecimal getPrecoProduto() {
+        return precoProduto;
+    }
 
-  public void setProdutoId(Integer produtoId) {
-    this.produtoId = produtoId;
-  }
+    public void setPrecoProduto(BigDecimal precoProduto) {
+        this.precoProduto = precoProduto;
+    }
 
-  public BigDecimal getPrecoProduto() {
-    return precoProduto;
-  }
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 
-  public void setPrecoProduto(BigDecimal precoProduto) {
-    this.precoProduto = precoProduto;
-  }
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
 
-  public Integer getQuandidade() {
-    return quandidade;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setQuandidade(Integer quandidade) {
-    this.quandidade = quandidade;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

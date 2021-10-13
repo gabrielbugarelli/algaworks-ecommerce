@@ -1,43 +1,42 @@
 package com.algaworks.ecommerce.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "estoque")
 public class Estoque {
 
-  @Id
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(name = "produto_id")
-  private Integer produtoId;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
 
-  private  Integer quantidade;
+    private Integer quantidade;
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public Integer getProdutoId() {
-    return produtoId;
-  }
+    public Produto getProduto() {
+        return produto;
+    }
 
-  public void setProdutoId(Integer produtoId) {
-    this.produtoId = produtoId;
-  }
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
-  public Integer getQuantidade() {
-    return quantidade;
-  }
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 
-  public void setQuantidade(Integer quantidade) {
-    this.quantidade = quantidade;
-  }
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
 }

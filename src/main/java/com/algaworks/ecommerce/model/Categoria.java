@@ -1,42 +1,65 @@
 package com.algaworks.ecommerce.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "categoria")
 public class Categoria {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
-  @TableGenerator(name = "tabela", table = "tabela_teste")
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column
-  private String nome;
-  @Column(name = "categoria_pai_id")
-  private Integer categoriaPaiId;
+    private String nome;
 
-  public Integer getId() {
-    return id;
-  }
+    @ManyToOne
+    @JoinColumn(name = "categoria_pai_id")
+    private Categoria categoriaPai;
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    @OneToMany(mappedBy = "categoriaPai")
+    private List<Categoria> categorias;
 
-  public String getNome() {
-    return nome;
-  }
+    @ManyToMany(mappedBy = "categorias")
+    private List<Produto> produtos;
 
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public Integer getCategoriaPaiId() {
-    return categoriaPaiId;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public void setCategoriaPaiId(Integer categoriaPaiId) {
-    this.categoriaPaiId = categoriaPaiId;
-  }
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Categoria getCategoriaPai() {
+        return categoriaPai;
+    }
+
+    public void setCategoriaPai(Categoria categoriaPai) {
+        this.categoriaPai = categoriaPai;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
 }

@@ -6,13 +6,48 @@ import javax.persistence.*;
 @Table(name = "pagamento_cartao")
 public class PagamentoCartao {
 
-  @Id
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(name = "pedido_id")
-  private Integer pedidoId;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
-  @Enumerated(EnumType.STRING)
-  private StatusPagamento status;
-  private String numero;
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento status;
+
+    private String numero;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public StatusPagamento getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPagamento status) {
+        this.status = status;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
 }
