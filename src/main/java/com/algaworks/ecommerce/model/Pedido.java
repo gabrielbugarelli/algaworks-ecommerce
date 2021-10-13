@@ -1,14 +1,25 @@
 package com.algaworks.ecommerce.model;
 
+import com.algaworks.ecommerce.listener.GenericoListener;
+import com.algaworks.ecommerce.listener.GerarNotaFiscalListener;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EntityListeners({ GerarNotaFiscalListener.class, GenericoListener.class })
 @Entity
 @Table(name = "pedido")
 public class Pedido {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,8 +31,11 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
 
-    @Column(name = "data_pedido")
-    private LocalDateTime dataPedido;
+    @Column(name = "data_criacao")
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "data_ultima_atualizacao")
+    private LocalDateTime dataUltimaAtualizacao;
 
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
@@ -40,83 +54,53 @@ public class Pedido {
     @Embedded
     private EnderecoEntregaPedido enderecoEntrega;
 
-    public Cliente getCliente() {
-        return cliente;
+    public boolean isPago() {
+        return StatusPedido.PAGO.equals(status);
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+//    @PrePersist
+//    @PreUpdate
+    public void calcularTotal() {
+        if (itens != null) {
+            total = itens.stream().map(ItemPedido::getPrecoProduto)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
     }
 
-    public List<ItemPedido> getItens() {
-        return itens;
+    @PrePersist
+    public void aoPersistir() {
+        dataCriacao = LocalDateTime.now();
+        calcularTotal();
     }
 
-    public void setItens(List<ItemPedido> itens) {
-        this.itens = itens;
+    @PreUpdate
+    public void aoAtualizar() {
+        dataUltimaAtualizacao = LocalDateTime.now();
+        calcularTotal();
     }
 
-    public LocalDateTime getDataPedido() {
-        return dataPedido;
+    @PostPersist
+    public void aposPersistir() {
+        System.out.println("Após persistir Pedido.");
     }
 
-    public void setDataPedido(LocalDateTime dataPedido) {
-        this.dataPedido = dataPedido;
+    @PostUpdate
+    public void aposAtualizar() {
+        System.out.println("Após atualizar Pedido.");
     }
 
-    public LocalDateTime getDataConclusao() {
-        return dataConclusao;
+    @PreRemove
+    public void aoRemover() {
+        System.out.println("Antes de remover Pedido.");
     }
 
-    public void setDataConclusao(LocalDateTime dataConclusao) {
-        this.dataConclusao = dataConclusao;
+    @PostRemove
+    public void aposRemover() {
+        System.out.println("Após remover Pedido.");
     }
 
-    public NotaFiscal getNotaFiscal() {
-        return notaFiscal;
-    }
-
-    public void setNotaFiscal(NotaFiscal notaFiscal) {
-        this.notaFiscal = notaFiscal;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public StatusPedido getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusPedido status) {
-        this.status = status;
-    }
-
-    public PagamentoCartao getPagamento() {
-        return pagamento;
-    }
-
-    public void setPagamento(PagamentoCartao pagamento) {
-        this.pagamento = pagamento;
-    }
-
-    public EnderecoEntregaPedido getEnderecoEntrega() {
-        return enderecoEntrega;
-    }
-
-    public void setEnderecoEntrega(EnderecoEntregaPedido enderecoEntrega) {
-        this.enderecoEntrega = enderecoEntrega;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    @PostLoad
+    public void aoCarregar() {
+        System.out.println("Após carregar o Pedido.");
     }
 }

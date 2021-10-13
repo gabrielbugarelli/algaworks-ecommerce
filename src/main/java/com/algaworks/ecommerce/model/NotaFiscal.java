@@ -1,14 +1,21 @@
 package com.algaworks.ecommerce.model;
 
-import javax.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "nota_fiscal")
 public class NotaFiscal {
 
-
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,36 +31,4 @@ public class NotaFiscal {
 
     @Column(name = "data_emissao")
     private Date dataEmissao;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
-    public String getXml() {
-        return xml;
-    }
-
-    public void setXml(String xml) {
-        this.xml = xml;
-    }
-
-    public Date getDataEmissao() {
-        return dataEmissao;
-    }
-
-    public void setDataEmissao(Date dataEmissao) {
-        this.dataEmissao = dataEmissao;
-    }
 }
