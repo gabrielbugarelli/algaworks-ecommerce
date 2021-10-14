@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,14 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    // garante que os dados não serão atualizados
+    @Column(name = "data_descricao", updatable = false)
+    private LocalDateTime dataCriacao;
+
+    // garante que o atributo não haverá valor no momento da inserção
+    @Column(name = "data_ultima_atualizacao", insertable = false)
+    private LocalDateTime dataUltimaAtualizacao;
 
     private String nome;
 
